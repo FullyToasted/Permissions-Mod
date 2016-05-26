@@ -1,2 +1,0 @@
-# Bertha
-Bertha Plugin
