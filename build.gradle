@@ -41,11 +41,14 @@ dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
+    //compile "some.group:artifact:version:4.0"
       
     // real examples
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+    
+    // http://mvnrepository.com/artifact/com.google.inject/guice-parent
+    compile 'ninja.leaping.configurate:configurate-hocon:3.1.1'
 
     // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
@@ -80,3 +83,8 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+jar {
+    from zipTree("libs/configurate-3.1.1")
+}
+
