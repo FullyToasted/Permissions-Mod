@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import net.re_renderreality.permissions.Permissions;
 import net.re_renderreality.permissions.config.backend.ConfigUtils;
@@ -13,21 +12,24 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 
-public class Mirrors implements Configurable
+/**
+ * Handles the config.conf file
+ */
+public class GlobalGroupsConfig implements Configurable
 {
-	private static Mirrors mirrors = new Mirrors();
+	private static GlobalGroupsConfig config = new GlobalGroupsConfig();
 
-	private Mirrors()
+	private GlobalGroupsConfig()
 	{
 		;
 	}
 
-	public static Mirrors getConfig()
+	public static GlobalGroupsConfig getConfig()
 	{
-		return mirrors;
+		return config;
 	}
 
-	private Path configFile = Permissions.INSTANCE.getConfigPath().resolve("Mirrors.conf");
+	private Path configFile = Permissions.INSTANCE.getConfigPath().resolve("GlobalGroups.conf");
 	private ConfigurationLoader<CommentedConfigurationNode> configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
 	private CommentedConfigurationNode configNode;
 
@@ -91,19 +93,22 @@ public class Mirrors implements Configurable
 	@Override
 	public void populate()
 	{
-		ArrayList<String> defaults = new ArrayList<String>();
-		defaults.add("users");
-		defaults.add("groups");
-		String comment = "Worlds listed here have their settings mirrored in their children.\n" +
-				"The first element 'world' is the main worlds name, and is the parent world.\n" +
-				"subsequent elements 'world_nether' and 'world_the_end' are worlds which will use\n" +
-				"the same user/groups files as the parent.\n" +
-				"the element 'all_unnamed_worlds' specifies all worlds that aren't listed, and automatically mirrors them to it's parent.\n" +
-				"Each child world can be configured to mirror the 'groups', 'users' or both files from its parent.";
-		ConfigUtils.createCommentNode(get().getNode("Mirrors", "world"), comment);
-		ConfigUtils.createNode(get().getNode("Mirrors", "world", "world_nether"), defaults);
-		ConfigUtils.createNode(get().getNode("Mirrors", "world", "world_end"), defaults);
-		ConfigUtils.createNode(get().getNode("Mirrors", "world", "all_unnamned_worlds"), defaults);
+		String groupsComment = "These groups only contain permission nodes. \n" +
+				"\n" +
+				"**** You can NOT add anything other than permission nodes **** \n" +
+				"**** This is NOT where you set up the groups which you give to users! **** \n" +
+				"**** goto groupmanager/worlds/worldname/groups.yml if you want to set the actual groups! **** \n" +
+				"\n" +
+				"These collections are to be inherited in your different worlds groups.yml's \n" +
+				"They can also be added as one of a users subgroups, but NOT as a primary group. \n" +
+				"These collections are available to ALL group and user yml's. \n" +
+				"\n" +
+				"Add to and customize these groups to fit your needs.";
+
+
+		//Populates with General COnfig information. Anything specialized will be given dedicated .conf file
+		ConfigUtils.createCommentNode(get().getNode("Groups"),groupsComment);
+		
 	}
 
 	@Override

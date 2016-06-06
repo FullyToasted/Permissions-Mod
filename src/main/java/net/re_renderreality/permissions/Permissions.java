@@ -14,8 +14,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.re_renderreality.permissions.config.MainConfig;
-import net.re_renderreality.permissions.config.Reader;
+import net.re_renderreality.permissions.config.GroupsConfig;
+import net.re_renderreality.permissions.config.Mirrors;
+import net.re_renderreality.permissions.debugger.Reader;
 import net.re_renderreality.permissions.proxy.CommonProxy;
 
 // dependencies = "required-after:Forge@[" + Reference.MIN_FORGE_VER + ",)",
@@ -24,6 +25,7 @@ public class Permissions
 {    
 	public static Logger logger;
 	
+	public enum DebugLevel { ALL, CONFIG, INFO, OFF, SEVERE, WARNING }
 	private Path configPath; 
 	
     @Mod.Instance(Reference.MODID)
@@ -35,27 +37,7 @@ public class Permissions
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
     	this.logger = event.getModLog();
-    	
-    	String path = event.getModConfigurationDirectory().getAbsolutePath() + "\\Permissions\\";
-    	configPath = Paths.get(path); 
-    	logger.info(path);
-   		if (!Files.exists(configPath))
-   		{
-   			try
-			{
-    			logger.info("Attempting to generate Directory");
-				Files.createDirectories(configPath);
-				logger.info("Success!");
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-				logger.info("Failure");
-			}
-    	}
-   		
-   		MainConfig.getConfig().setup();
-   		Reader.init();
+    	proxy.preInit(event);	
     }
 
     @Mod.EventHandler
@@ -81,5 +63,9 @@ public class Permissions
     
     public Path getConfigPath() {
     	return this.configPath;
+    }
+    
+    public void setConfigPath(Path path) {
+    	this.configPath = path;
     }
 }

@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import net.re_renderreality.permissions.Permissions;
+import net.re_renderreality.permissions.Reference;
+import net.re_renderreality.permissions.config.backend.ConfigUtils;
 import net.re_renderreality.permissions.config.backend.Configurable;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
@@ -28,7 +30,7 @@ public class MainConfig implements Configurable
 		return config;
 	}
 
-	private Path configFile = Permissions.INSTANCE.getConfigPath().resolve("Permissions.conf");
+	private Path configFile = Permissions.INSTANCE.getConfigPath().resolve("Config.conf");
 	private ConfigurationLoader<CommentedConfigurationNode> configLoader = HoconConfigurationLoader.builder().setPath(configFile).build();
 	private CommentedConfigurationNode configNode;
 
@@ -55,6 +57,14 @@ public class MainConfig implements Configurable
 		}
 	}
 
+	@Override
+	public void refresh()
+	{
+		load();
+		populate();
+		save();
+	}
+	
 	@Override
 	public void load()
 	{
@@ -84,15 +94,22 @@ public class MainConfig implements Configurable
 	@Override
 	public void populate()
 	{
+		String debuggingComment = "Level of detail GroupManager will use when logging. \nAcceptable entries are - ALL,CONFIG,FINE,FINER,FINEST,INFO,OFF,SEVERE,WARNING";
+
 		//Populates with General COnfig information. Anything specialized will be given dedicated .conf file
-		get().getNode("Groups").setComment("List of Groups");
-		get().getNode("Groups", "Wood").setValue(1);
-		get().getNode("Groups", "Stone").setValue(2);
-		get().getNode("Groups", "Iron").setValue(3);
-		get().getNode("Groups", "Gold").setValue(4);
-		get().getNode("Groups", "Diamond").setValue(5);
-	
+		ConfigUtils.createCommentNode(get().getNode("Settings", "MYSQL"),"MySQL Options for RRRP2.");
+		ConfigUtils.createNode(get().getNode("Settings", "MYSQL", "use"), false, "Enables/Disables MySQL usage for Permissions.");
+		ConfigUtils.createNode(get().getNode("Settings", "MYSQL", "port"), "8080", "Port of MySQL Database.");
+		ConfigUtils.createNode(get().getNode("Settings", "MYSQL", "host"), "localhost", "Address of MySQL Database.");
+		ConfigUtils.createNode(get().getNode("Settings", "MYSQL", "database"), "Minecraft", "Name of MySQL Database.");
+		ConfigUtils.createNode(get().getNode("Settings", "MYSQL", "username"), "root", "Username for MySQL Database.");
+		ConfigUtils.createNode(get().getNode("Settings", "MYSQL", "password"), "pass", "Password for MySQL Database.");
 		
+		ConfigUtils.createNode(get().getNode("Settings", "Debug", "Logging Level"), "INFO", "Level of info to spit out to the console");
+		
+		ConfigUtils.createNode(get().getNode("Settings", "General", "opOverrides"), true, "With this enabled anyone set as op has full permissions when managing GroupManager \n The user will be able to promote players to the same group or even above.");
+		ConfigUtils.createNode(get().getNode("Settings", "General", "Config Refresh"), false, "Will refresh config files on server bootup \nWill not affect your set values and is done automatically upon Mod update");
+		ConfigUtils.createNode(get().getNode("Version#"), Reference.VERSION, "DO NOT CHANGE THIS!!!");
 	}
 
 	@Override

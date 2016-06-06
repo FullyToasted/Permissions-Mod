@@ -14,6 +14,8 @@ public interface Configurable {
     void save();
 
     void populate();
+    
+    void refresh();
 
     CommentedConfigurationNode get();
 }
