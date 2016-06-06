@@ -105,7 +105,7 @@ public class MainConfig implements Configurable
 		ConfigUtils.createNode(get().getNode("Settings", "MYSQL", "username"), "root", "Username for MySQL Database.");
 		ConfigUtils.createNode(get().getNode("Settings", "MYSQL", "password"), "pass", "Password for MySQL Database.");
 		
-		ConfigUtils.createNode(get().getNode("Settings", "Debug", "Logging Level"), "INFO", "Level of info to spit out to the console");
+		ConfigUtils.createNode(get().getNode("Settings", "Debug", "Logging Level"), "INFO", "Level of info to spit out to the console Options:ALL, CONFIG, WARN, SEVERE, DEBUG, OFF, INFO");
 		
 		ConfigUtils.createNode(get().getNode("Settings", "General", "opOverrides"), true, "With this enabled anyone set as op has full permissions when managing GroupManager \n The user will be able to promote players to the same group or even above.");
 		ConfigUtils.createNode(get().getNode("Settings", "General", "Config Refresh"), false, "Will refresh config files on server bootup \nWill not affect your set values and is done automatically upon Mod update");

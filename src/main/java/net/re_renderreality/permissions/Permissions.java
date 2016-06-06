@@ -23,9 +23,8 @@ import net.re_renderreality.permissions.proxy.CommonProxy;
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION)
 public class Permissions
 {    
-	public static Logger logger;
 	
-	public enum DebugLevel { ALL, CONFIG, INFO, OFF, SEVERE, WARNING }
+	public enum DebugLevel { ALL, DEBUG, CONFIG, INFO, OFF, SEVERE, WARNING }
 	private Path configPath; 
 	
     @Mod.Instance(Reference.MODID)
@@ -36,7 +35,6 @@ public class Permissions
 	
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-    	this.logger = event.getModLog();
     	proxy.preInit(event);	
     }
 

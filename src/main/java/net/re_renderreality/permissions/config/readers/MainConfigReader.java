@@ -1,5 +1,6 @@
 package net.re_renderreality.permissions.config.readers;
 
+import jline.internal.Log;
 import net.re_renderreality.permissions.Permissions;
 import net.re_renderreality.permissions.Reference;
 import net.re_renderreality.permissions.Permissions.DebugLevel;
@@ -20,22 +21,26 @@ public class MainConfigReader {
 	 */
 	public static DebugLevel getDebugLevel() {
 		CommentedConfigurationNode node = Configs.getConfig(mainConfig).getNode("Settings", "Debug", "Logging Level");
+		Log.info(configManager.getString(node).isPresent() + " |" + configManager.getString(node).get()+"|");
 		if (configManager.getString(node).isPresent()) {
-			if(configManager.getString(node).equals("ALL")) {
+			String debug = configManager.getString(node).get();
+			if(debug.equals("ALL")) {
 				return DebugLevel.ALL;
-			} else if(configManager.getString(node).equals("CONFIG")) {
+			} else if(debug.equals("CONFIG")) {
 				return DebugLevel.CONFIG;
-			} else if(configManager.getString(node).equals("INFO")) {
+			} else if(debug.equals("DEBUG")) {
+				return DebugLevel.DEBUG;
+			} else if(debug.equals("INFO")) {
 				return DebugLevel.INFO;
-			} else if(configManager.getString(node).equals("OFF")) {
+			} else if(debug.equals("OFF")) {
 				return DebugLevel.OFF;
-			} else if(configManager.getString(node).equals("SEVERE")) {
+			} else if(debug.equals("SEVERE")) {
 				return DebugLevel.SEVERE;
-			} else if(configManager.getString(node).equals("WARNING")) {
+			} else if(debug.equals("WARNING")) {
 				return DebugLevel.WARNING;
 			} 
 		}
-		Permissions.INSTANCE.logger.error("Error getting DEBUG level from Config. Resetting to default");
+		Log.error("Error getting DEBUG level from Config. Resetting to default");
 		setSQLPort("INFO");
 		return DebugLevel.INFO;
 	}
@@ -47,7 +52,7 @@ public class MainConfigReader {
 		if(value.equals("ALL") || value.equals("CONFIG") || value.equals("INFO") || value.equals("OFF") || value.equals("SEVERE") || value.equals("WARNING")) {
 			Configs.setValue(mainConfig, new Object[] { "Settings", "Debug", "Logging Level" }, value);
 		} else {
-			Permissions.INSTANCE.logger.error("Error getting DEBUG level to Config. Resetting to default");
+			Log.warn("Error getting DEBUG level to Config. Resetting to default");
 			Configs.setValue(mainConfig, new Object[] { "Settings", "Debug", "Logging Level" }, "INFO");
 		}
 	}

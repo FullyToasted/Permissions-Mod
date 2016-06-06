@@ -49,6 +49,8 @@ dependencies {
     
     // http://mvnrepository.com/artifact/com.google.inject/guice-parent
     compile 'ninja.leaping.configurate:configurate-hocon:3.1.1'
+    compile 'mysql:mysql-connector-java:6.0.2'
+    compile 'org.xerial:sqlite-jdbc:3.8.11.2'
 
     // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'

@@ -13,12 +13,16 @@ import net.re_renderreality.permissions.Permissions;
 import net.re_renderreality.permissions.Reference;
 import net.re_renderreality.permissions.config.*;
 import net.re_renderreality.permissions.config.readers.MainConfigReader;
+import net.re_renderreality.permissions.database.Database;
 import net.re_renderreality.permissions.debugger.Reader;
+import net.re_renderreality.permissions.utils.Log;
 
 public class CommonProxy {
 	
 	public void preInit(FMLPreInitializationEvent event) {
+		Log.setup(event);
 		registerConfig(event);
+		Database.setup(event);
 	}
     public void registerRenderers() {
     	
@@ -30,23 +34,23 @@ public class CommonProxy {
     
     
     public void registerConfig(FMLPreInitializationEvent event) {
-    	Logger logger = Permissions.INSTANCE.logger;
     	String sPath = event.getModConfigurationDirectory().getAbsolutePath() + "\\Permissions\\";
     	Path path = Paths.get(sPath);
     	Permissions.INSTANCE.setConfigPath(path);
     	
-    	logger.info(path);
+    	Log.debug(sPath);
    		if (!Files.exists(path)) {
+   			Log.info("Attempting to generate Directory");
    			try {
-    			logger.info("Attempting to generate Directory");
 				Files.createDirectories(path);
-				logger.info("Success!");
+				Log.info("Success!");
 			} catch (IOException e) {
 				e.printStackTrace();
-				logger.info("Failure");
+				Log.info("Failure");
 			}
     	}
    		MainConfig.getConfig().setup();
+   		Reference.setDebugLevel(MainConfigReader.getDebugLevel());
    		if(MainConfigReader.getConfigRefresh() || !MainConfigReader.getVersion().equals(Reference.VERSION)) {
    			MainConfig.getConfig().refresh();
    			GlobalGroupsConfig.getConfig().refresh();
