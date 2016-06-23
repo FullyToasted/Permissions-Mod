@@ -12,6 +12,7 @@ public class Log {
 	
 	public static void setup(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
+		logger.info("Logger Activated");
 	}
 	
 	public static void info(String message) {
@@ -21,6 +22,7 @@ public class Log {
 	}
 	
 	public static void warn(String message) {
+		logger.warn(message);
 		if(Reference.getDebugLevel() == DebugLevel.INFO || Reference.getDebugLevel() == DebugLevel.ALL || Reference.getDebugLevel() == DebugLevel.WARNING || Reference.getDebugLevel() == DebugLevel.DEBUG) {
 			logger.warn(message);
 		}

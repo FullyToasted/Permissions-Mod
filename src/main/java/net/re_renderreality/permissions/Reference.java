@@ -25,7 +25,7 @@ public final class Reference {
 	/** The build date */
     public static final Date BUILD = new Date(System.currentTimeMillis()); //gets replaced during build process
     
-    private static DebugLevel debug;
+    private static DebugLevel debug = DebugLevel.INFO;
     public static final String SERVER_PROXY_CLASS = "net.re_renderreality.permissions.proxy.CommonProxy";
 	
 	public static final boolean ForceDebug = false;

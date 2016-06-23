@@ -21,7 +21,6 @@ public class MainConfigReader {
 	 */
 	public static DebugLevel getDebugLevel() {
 		CommentedConfigurationNode node = Configs.getConfig(mainConfig).getNode("Settings", "Debug", "Logging Level");
-		Log.info(configManager.getString(node).isPresent() + " |" + configManager.getString(node).get()+"|");
 		if (configManager.getString(node).isPresent()) {
 			String debug = configManager.getString(node).get();
 			if(debug.equals("ALL")) {

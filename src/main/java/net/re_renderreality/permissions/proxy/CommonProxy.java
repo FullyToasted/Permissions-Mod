@@ -22,6 +22,7 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		Log.setup(event);
 		registerConfig(event);
+		Log.info("DebugLevel: " + Reference.getDebugLevel());
 		Database.setup(event);
 	}
     public void registerRenderers() {
