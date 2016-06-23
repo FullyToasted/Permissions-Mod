@@ -31,7 +31,7 @@ import net.re_renderreality.permissions.utils.SQLService;
 public class Database {
 	public static Connection connections;
 	public static List<String> queue = new ArrayList<String>();
-	
+	public static String path = "";
 	public static void setup(FMLPreInitializationEvent event) {
 
 		try {
@@ -61,7 +61,8 @@ public class Database {
 		    			e.printStackTrace();
 		    		}
 		    	}
-		    	connections = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\alexh\\Desktop\\Permissions\\run\\config\\Permissions\\Data\\Database.db");		    	
+		    	path = event.getModConfigurationDirectory().getAbsolutePath();
+		    	connections = DriverManager.getConnection("jdbc:sqlite:" +  path + "\\Permissions\\Data\\Database.db");		    	
 			} else {
 				//Gets MySQL data from the congig file
 				String host = MainConfigReader.getMySQLHost();
@@ -95,7 +96,7 @@ public class Database {
 	public static void execute(String execute) {	
 		try {
 			Log.info(execute);
-			Connection connection = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\alexh\\Desktop\\Permissions\\run\\config\\Permissions\\Data\\Database.db");
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:" +  path + "\\Permissions\\Data\\Database.db");
 			Statement statement = connection.createStatement();
 			statement.execute(execute);
 			statement.close();
